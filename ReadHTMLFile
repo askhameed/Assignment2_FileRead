@@ -1,0 +1,31 @@
+def find_tags(filename):
+    """Count the approximate number of HTML tags in a file."""
+    tags_str = 'html,body,head,title,link,script,style,meta,header,nav,a,div,span,table,thead,tbody,tr,td,th,hr,br,p,h1,h2,h3,h4,h5,h6,b,i,ul,ol,li,section,footer,article'
+    tags = tags_str.split(',')
+    used_tags_start = {}
+    used_tags_end = {}
+        
+    try:
+        with open(filename) as f_obj:
+            contents = f_obj.read()
+    except FileNotFoundError:
+        msg = "Sorry, the file " + filename + " does not exist."
+        print(msg)
+    else:
+        
+        for tag in tags:
+            
+            num1 = len(contents.split('<' + tag + '>')) - 1
+            num2 = len(contents.split('<' + tag + ' ')) - 1
+            if (num1 + num2 > 0):
+                used_tags_start[tag] = num1 + num2
+                
+            num = len(contents.split('</' + tag + '>')) - 1
+            if (num > 0):
+                used_tags_end[tag] = num
+                
+        print(used_tags_start)
+        print(used_tags_end)
+        
+filename = "example_html_file.html"
+find_tags(filename)
